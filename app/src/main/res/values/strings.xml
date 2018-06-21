@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Picssshare</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="password">password</string>
+    <string name="username">username</string>
+    <string name="membership">Not a member? Sign up now.</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email">email</string>
+    <string name="repeat_password">repeat password</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="err_required">this field is required</string>
+    <string name="err_pass">Password doesn\'t match</string>
+    <string name="err_email">Non valid email</string>
+    <string name="err_username_exists">User with this username already exists</string>
+</resources>
