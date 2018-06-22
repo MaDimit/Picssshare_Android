@@ -10,6 +10,9 @@ import com.example.maksimdimitrov.picssshare.model.User
 import com.example.maksimdimitrov.picssshare.utilities.EXTRA_USER
 import com.example.maksimdimitrov.picssshare.utilities.whenNull
 import kotlinx.android.synthetic.main.activity_main.*
+import android.support.design.widget.BottomNavigationView
+import kotlinx.android.synthetic.main.fragment_bottom_navigation.*
+
 
 const val FRAGMENT_FEED = "feed_fragment"
 const val FRAGMENT_SEARCH = "search_fragment"
@@ -59,8 +62,17 @@ class MainActivity : AppCompatActivity()
         fm.beginTransaction()
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out,R.anim.fade_in, R.anim.fade_out)
                 .replace(fragment_container.id, fragment, tag)
-                .addToBackStack(null)
                 .commit()
+    }
+
+    override fun onBackPressed() {
+        val navBar = frag_bottom_navigation.bottom_navigation
+        val seletedItemId = navBar.selectedItemId
+        if (R.id.nav_btn_home != seletedItemId) {
+            navBar.selectedItemId = R.id.nav_btn_home
+        } else {
+            super.onBackPressed()
+        }
     }
 
     lateinit var user: User

@@ -28,6 +28,7 @@ class LoginActivity : AppCompatActivity(), SignInFragment.SignInListener, SignUp
                     putExtra(EXTRA_USER, user)
                 }
                 startActivity(intent)
+                finish()
             }
         }
     }
@@ -49,6 +50,7 @@ class LoginActivity : AppCompatActivity(), SignInFragment.SignInListener, SignUp
                     putExtra(EXTRA_USER, user)
                 }
                 startActivity(intent)
+                finish()
             }
         }
     }

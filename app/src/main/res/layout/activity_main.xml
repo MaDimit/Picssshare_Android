@@ -8,7 +8,7 @@
 
 
     <fragment
-        android:id="@+id/fragment"
+        android:id="@+id/frag_bottom_navigation"
         android:name="com.example.maksimdimitrov.picssshare.fragments.main_activity.BottomNavigationFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:id="@+id/fragment_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/fragment"
+        app:layout_constraintBottom_toTopOf="@+id/frag_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
