@@ -31,7 +31,7 @@ class SignUpFragment : Fragment() {
 
     private lateinit var listener: SignUpListener
     private lateinit var rootView: View
-    private val user = User(null, null, null, null, false)
+    private val user = User("", "", "", null, false)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

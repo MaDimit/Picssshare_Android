@@ -6,11 +6,12 @@ import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
 import com.example.maksimdimitrov.picssshare.R
 import com.example.maksimdimitrov.picssshare.fragments.main_activity.*
+import com.example.maksimdimitrov.picssshare.model.DataSource
+import com.example.maksimdimitrov.picssshare.model.Post
 import com.example.maksimdimitrov.picssshare.model.User
 import com.example.maksimdimitrov.picssshare.utilities.EXTRA_USER
 import com.example.maksimdimitrov.picssshare.utilities.whenNull
 import kotlinx.android.synthetic.main.activity_main.*
-import android.support.design.widget.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_bottom_navigation.*
 
 
@@ -26,15 +27,20 @@ class MainActivity : AppCompatActivity()
         , SearchFragment.SearchInteractionListener
         , UploadFragment.UploadInteractionListener
         , AccountFragment.AccountInteractionListener
-        , FavoritesFragment.FavoritesInteractionListener{
+        , FavoritesFragment.FavoritesInteractionListener {
 
     override fun onBottomNavigationItemClick(item: Int) {
-        when(item) {
-            NAVIGATION_HOME -> replaceFragment(fm.findFragmentByTag(FRAGMENT_FEED) ?: FeedFragment())
-            NAVIGATION_SEARCH -> replaceFragment(fm.findFragmentByTag(FRAGMENT_SEARCH) ?: SearchFragment())
-            NAVIGATION_UPLOAD -> replaceFragment(fm.findFragmentByTag(FRAGMENT_UPLOAD) ?: UploadFragment())
-            NAVIGATION_FAVORITES -> replaceFragment(fm.findFragmentByTag(FRAGMENT_FAVORITES) ?: FavoritesFragment())
-            NAVIGATION_ACCOUNT -> replaceFragment(fm.findFragmentByTag(FRAGMENT_ACCOUNT) ?: AccountFragment())
+        when (item) {
+            NAVIGATION_HOME -> replaceFragment(fm.findFragmentByTag(FRAGMENT_FEED)
+                    ?: FeedFragment.newInstance(FeedData(user, DataSource.getPosts(user.username))))
+            NAVIGATION_SEARCH -> replaceFragment(fm.findFragmentByTag(FRAGMENT_SEARCH)
+                    ?: SearchFragment())
+            NAVIGATION_UPLOAD -> replaceFragment(fm.findFragmentByTag(FRAGMENT_UPLOAD)
+                    ?: UploadFragment())
+            NAVIGATION_FAVORITES -> replaceFragment(fm.findFragmentByTag(FRAGMENT_FAVORITES)
+                    ?: FavoritesFragment())
+            NAVIGATION_ACCOUNT -> replaceFragment(fm.findFragmentByTag(FRAGMENT_ACCOUNT)
+                    ?: AccountFragment())
         }
     }
 
@@ -58,24 +64,24 @@ class MainActivity : AppCompatActivity()
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun replaceFragment(fragment : Fragment, tag : String? = null){
+    private fun replaceFragment(fragment: Fragment, tag: String? = null) {
         fm.beginTransaction()
-                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out,R.anim.fade_in, R.anim.fade_out)
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
                 .replace(fragment_container.id, fragment, tag)
                 .commit()
     }
 
     override fun onBackPressed() {
         val navBar = frag_bottom_navigation.bottom_navigation
-        val seletedItemId = navBar.selectedItemId
-        if (R.id.nav_btn_home != seletedItemId) {
+        val selectedItemId = navBar.selectedItemId
+        if (R.id.nav_btn_home != selectedItemId) {
             navBar.selectedItemId = R.id.nav_btn_home
         } else {
             super.onBackPressed()
         }
     }
 
-    lateinit var user: User
+    private lateinit var user: User
     private lateinit var fm: FragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,9 +90,8 @@ class MainActivity : AppCompatActivity()
         user = intent.getParcelableExtra(EXTRA_USER)
         fm = supportFragmentManager
         savedInstanceState.whenNull {
-            fm.beginTransaction()
-                    .replace(fragment_container.id, FeedFragment(), FRAGMENT_FEED)
-                    .commit()
+            replaceFragment(FeedFragment.newInstance(FeedData(user, DataSource.getPosts(user.username))))
         }
     }
+
 }
