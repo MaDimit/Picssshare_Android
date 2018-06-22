@@ -16,4 +16,9 @@
     <string name="err_pass">Password doesn\'t match</string>
     <string name="err_email">Non valid email</string>
     <string name="err_username_exists">User with this username already exists</string>
+    <string name="upload">Upload</string>
+    <string name="search">Search</string>
+    <string name="home">Home</string>
+    <string name="favorites">Favorites</string>
+    <string name="account">Account</string>
 </resources>
