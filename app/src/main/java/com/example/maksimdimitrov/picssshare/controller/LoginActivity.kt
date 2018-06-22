@@ -3,9 +3,7 @@ package com.example.maksimdimitrov.picssshare.controller
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.example.maksimdimitrov.picssshare.R
 import com.example.maksimdimitrov.picssshare.fragments.SignInFragment
 import com.example.maksimdimitrov.picssshare.fragments.SignUpFragment
@@ -13,6 +11,7 @@ import com.example.maksimdimitrov.picssshare.model.DataSource
 import com.example.maksimdimitrov.picssshare.model.User
 import com.example.maksimdimitrov.picssshare.utilities.CARD_ELEVATION_DEFAULT
 import com.example.maksimdimitrov.picssshare.utilities.EXTRA_USER
+import com.example.maksimdimitrov.picssshare.utilities.whenNull
 import kotlinx.android.synthetic.main.activity_login.*
 
 const val SIGN_IN_FRAGMENT = "sign_in_fragment"
@@ -58,7 +57,7 @@ class LoginActivity : AppCompatActivity(), SignInFragment.SignInListener, SignUp
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        if(savedInstanceState == null) {
+        savedInstanceState.whenNull{
             supportFragmentManager.beginTransaction()
                     .replace(login_card.id, SignInFragment(), SIGN_IN_FRAGMENT)
                     .commit()
