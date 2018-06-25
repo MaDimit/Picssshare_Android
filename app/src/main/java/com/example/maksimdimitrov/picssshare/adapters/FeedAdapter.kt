@@ -18,8 +18,8 @@ class FeedAdapter(feedData: FeedData) : RecyclerView.Adapter<FeedAdapter.PostVh>
         fun onInteraction(view: View, position: Int = -1)
     }
 
-    val dataset = feedData.dataSet
-    val user = feedData.user
+    private val dataset = feedData.dataSet
+    private val user = feedData.user
     lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostVh {

@@ -6,6 +6,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +46,7 @@ data class FeedData(val user: User, val dataSet: List<Post>) : Parcelable {
 }
 
 const val FEED_DATA = "feed_data"
+const val BUNDLE_LIST_STATE = "list_state_bundle"
 
 class FeedFragment : Fragment(), FeedAdapter.FeedAdapterListener {
 
@@ -54,15 +56,16 @@ class FeedFragment : Fragment(), FeedAdapter.FeedAdapterListener {
 
     private lateinit var listener: FeedInteractionListener
     private lateinit var rootView: View
-    private lateinit var feedData : FeedData
+    private lateinit var feedData: FeedData
+    private lateinit var rv: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         feedData = arguments?.getParcelable(FEED_DATA)
                 ?: FeedData(User("null"
-                ,"null"
                 , "null"
-                , DateOfBirth(0,0,0), false)
+                , "null"
+                , DateOfBirth(0, 0, 0), false)
                 , listOf())
     }
 
@@ -70,12 +73,11 @@ class FeedFragment : Fragment(), FeedAdapter.FeedAdapterListener {
                               savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_feed, container, false)
         setRecycler()
-        //set Adapter
         return rootView
     }
 
     private fun setRecycler() {
-        val rv = rootView.recycler_view
+        rv = rootView.recycler_view
         rv.adapter = FeedAdapter(feedData)
         rv.layoutManager = LinearLayoutManager(activity)
     }
@@ -90,8 +92,21 @@ class FeedFragment : Fragment(), FeedAdapter.FeedAdapterListener {
     }
 
     interface FeedInteractionListener {
-        fun onFeedItemClick(item : Int)
+        fun onFeedItemClick(item: Int)
 
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            val savedRecyclerLayoutState = savedInstanceState.getParcelable<Parcelable>(BUNDLE_LIST_STATE)
+            rv.layoutManager?.onRestoreInstanceState(savedRecyclerLayoutState)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(BUNDLE_LIST_STATE, rv.layoutManager?.onSaveInstanceState())
     }
 
     companion object {

@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import com.example.maksimdimitrov.picssshare.R
 import com.example.maksimdimitrov.picssshare.fragments.main_activity.*
 import com.example.maksimdimitrov.picssshare.model.DataSource
-import com.example.maksimdimitrov.picssshare.model.Post
 import com.example.maksimdimitrov.picssshare.model.User
 import com.example.maksimdimitrov.picssshare.utilities.EXTRA_USER
 import com.example.maksimdimitrov.picssshare.utilities.whenNull
@@ -64,20 +63,23 @@ class MainActivity : AppCompatActivity()
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun replaceFragment(fragment: Fragment, tag: String? = null) {
-        fm.beginTransaction()
-                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
+    private fun replaceFragment(fragment: Fragment, tag: String? = null, addToBackstack: Boolean = false) {
+        val ft = fm.beginTransaction()
+        ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
                 .replace(fragment_container.id, fragment, tag)
-                .commit()
+        if(addToBackstack){
+            ft.addToBackStack(tag)
+        }
+        ft.commit()
     }
 
     override fun onBackPressed() {
         val navBar = frag_bottom_navigation.bottom_navigation
         val selectedItemId = navBar.selectedItemId
-        if (R.id.nav_btn_home != selectedItemId) {
-            navBar.selectedItemId = R.id.nav_btn_home
-        } else {
-            super.onBackPressed()
+        when {
+            selectedItemId != R.id.nav_btn_home -> navBar.selectedItemId = R.id.nav_btn_home
+            selectedItemId == R.id.nav_btn_home -> finish()
+            else -> super.onBackPressed()
         }
     }
 
@@ -90,7 +92,7 @@ class MainActivity : AppCompatActivity()
         user = intent.getParcelableExtra(EXTRA_USER)
         fm = supportFragmentManager
         savedInstanceState.whenNull {
-            replaceFragment(FeedFragment.newInstance(FeedData(user, DataSource.getPosts(user.username))))
+            replaceFragment(FeedFragment.newInstance(FeedData(user, DataSource.getPosts(user.username))), FRAGMENT_FEED, true)
         }
     }
 
